@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopify AI Importer Starter</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; max-width: 1000px; }
+      textarea { width: 100%; min-height: 220px; font-family: monospace; }
+      button { padding: 10px 14px; margin-top: 10px; cursor: pointer; }
+      pre { background: #111; color: #0f0; padding: 12px; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>Shopify AI Importer Starter</h1>
+    <p>Paste imported product JSON and transform it into copyright-safer content + AI-generated image URLs.</p>
+
+    <textarea id="payload">
+{
+  "platform": "aliexpress",
+  "sourceUrl": "https://example.com/product/123",
+  "title": "Best cheap portable blender",
+  "description": "Original product with free shipping and perfect design.",
+  "template": "Create a unique ecommerce listing for {{title}} from {{platform}}.",
+  "variants": [
+    { "title": "Blue", "price": "29.99", "sku": "BLU-01" },
+    { "title": "Pink", "price": "29.99", "sku": "PNK-01" }
+  ]
+}
+    </textarea>
+    <br />
+    <button id="transform">Transform Product</button>
+    <pre id="output">Run transform to see output...</pre>
+
+    <script>
+      async function postJson(url, payload) {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        return response.json();
+      }
+
+      document.getElementById("transform").addEventListener("click", async () => {
+        const output = document.getElementById("output");
+        try {
+          const payload = JSON.parse(document.getElementById("payload").value);
+          const data = await postJson("/api/import", payload);
+          output.textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+          output.textContent = error.message;
+        }
+      });
+    </script>
+  </body>
+</html>
