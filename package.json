@@ -1,0 +1,18 @@
+{
+  "name": "shopify-ai-importer-starter",
+  "version": "0.1.0",
+  "description": "Starter Shopify app-style importer that rewrites product content and generates replacement images.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "check": "node --check src/server.js && node --check src/services/transformer.js && node --check src/services/shopify.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "morgan": "^1.10.0"
+  }
+}
